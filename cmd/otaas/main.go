@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"crypto/sha1"
+	"encoding/hex"
 	"flag"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 
@@ -38,11 +41,17 @@ func main() {
 
 	// POST managed pipeline (create/ update)
 	router.POST("/v1/otaas/mPipeline", CreateOTELPipeline)
-	// POST unmanaged pipeline (add)
 
 	// DELETE pipeline
 
+	// Status Check for livez readyz endpoint
+	router.GET("/status", statusCheck)
+
 	router.Run(*listen)
+}
+
+func statusCheck(c *gin.Context) {
+	c.JSON(http.StatusOK, "OK")
 }
 
 func CreateOTELPipeline(g *gin.Context) {
@@ -51,13 +60,13 @@ func CreateOTELPipeline(g *gin.Context) {
 	var otaasPipeLine v1.OTaaSPipeline
 
 	if err := g.BindJSON(&otaasPipeLine); err != nil {
-		log.Printf(ctx, "error: %v", err)
+		log.Printf("error: %v", err)
 		g.JSON(http.StatusBadRequest, err.Error())
 
 		return
 	}
 
-	log.Printf(ctx, "creating OtelPipe with details [%+v]", otaasPipeLine)
+	log.Printf("creating OtelPipe with details [%+v]", otaasPipeLine)
 
 	//Construct Custom Resource for OTEL collector
 	// Able to dpeloy to OTEL collector with requested details
@@ -65,7 +74,7 @@ func CreateOTELPipeline(g *gin.Context) {
 
 	// Get unique routing key
 	routingKey := generateRoutingKey()
-	log.Printf(ctx, "Generated Routing Key: [%v]", routingKey)
+	log.Printf("Generated Routing Key: [%v]", routingKey)
 
 	// Update mapping with routing key and OTEL collector cluster IP's
 
@@ -80,11 +89,11 @@ func createCustomResource(ctx context.Context, pipeline v1.OTaaSPipeline) {
 		kubeconfig := flag.String("kubeconfig", filepath.Join(homedir.HomeDir(), ".kube",
 			"config"), "Path to a kubeconfig file")
 
-		log.Printf(ctx, "Kubeconfig details : [%+v]", kubeconfig)
+		log.Printf("Kubeconfig details : [%+v]", kubeconfig)
 
 		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
 		if err != nil {
-			log.Printf(ctx, "Error loading kubeconfig: %v\n", err)
+			log.Printf("Error loading kubeconfig: %v\n", err)
 			return
 		}
 
@@ -106,12 +115,12 @@ func createCustomResource(ctx context.Context, pipeline v1.OTaaSPipeline) {
 	//	log.Errorf(ctx, "Error loading kubeconfig: %v\n", err)
 	//	return
 	//}
-	log.Printf(ctx, "config details : [%+v]", config)
+	log.Printf("config details : [%+v]", config)
 
 	// Create a dynamic client for working with custom resources.
 	client, err := dynamic.NewForConfig(config)
 	if err != nil {
-		log.Printf(ctx, "Error creating dynamic client: %v\n", err)
+		log.Printf("Error creating dynamic client: %v\n", err)
 		return
 	}
 
@@ -186,11 +195,11 @@ service:
 	})
 
 	if err != nil {
-		log.Printf(ctx, "Error applying custom resource: %v\n", err)
+		log.Printf("Error applying custom resource: %v\n", err)
 		return
 	}
 
-	log.Printf(ctx, "Custom resource applied successfully.")
+	log.Printf("Custom resource applied successfully.")
 }
 func generateRoutingKey() string {
 	// Get current timestamp
