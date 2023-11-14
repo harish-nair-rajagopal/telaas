@@ -53,7 +53,7 @@ Building and running the Opamp Server
 
 Building and running the global pipeline service
 
-Building and running the otaas service
+[Building and running the otaas service](helm/otaas/README.md)
 
 [Building and running the OTEL collector with Opamp enabled](helm/test-collector/README.md)
 
