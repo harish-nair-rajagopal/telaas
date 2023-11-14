@@ -24,6 +24,7 @@ func Start(rootDir string) {
 	mux.HandleFunc("/", renderRoot)
 	mux.HandleFunc("/agent", renderAgent)
 	mux.HandleFunc("/save_config", saveCustomConfigForInstance)
+	mux.HandleFunc("/status", statusCheck)
 	// mux.HandleFunc("/rotate_client_cert", rotateInstanceClientCert)
 	srv = &http.Server{
 		Addr:    "0.0.0.0:4321",
@@ -59,6 +60,11 @@ func renderTemplate(w http.ResponseWriter, htmlTemplateFile string, data interfa
 
 func renderRoot(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "root.html", data.AllAgents.GetAllAgentsReadonlyClone())
+}
+
+func statusCheck(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	return
 }
 
 func renderAgent(w http.ResponseWriter, r *http.Request) {

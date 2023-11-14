@@ -39,8 +39,8 @@ securityContext: {}
 service:
   name: opamp-service
   type: LoadBalancer
-  externalPort: 8080
-  internalPort: 8080
+  externalPort: 4321
+  internalPort: 4321
 
 livenessProbe:
   initialDelaySeconds: 10

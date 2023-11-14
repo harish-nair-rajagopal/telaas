@@ -32,6 +32,6 @@ RUN groupadd -g ${USER_ID} appuser && \
 
 USER appuser
 
-EXPOSE 4320
+EXPOSE 4320 4321
 ENTRYPOINT ["/app/opamp-server"]
 CMD []

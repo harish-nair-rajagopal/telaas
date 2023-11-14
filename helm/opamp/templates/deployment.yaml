@@ -39,14 +39,14 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /status
+              path: /v1/opamp
               port: {{ .Values.service.internalPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           readinessProbe:
             httpGet:
-              path: /status
+              path: /v1/opamp
               port: {{ .Values.service.internalPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
