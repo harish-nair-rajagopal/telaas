@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 
-	v1 "github.com/harishrajagopal/telaas/api/v1"
+	v1 "github.com/harish-nair-rajagopal/telaas/api/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
