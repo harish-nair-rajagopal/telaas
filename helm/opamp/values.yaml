@@ -39,8 +39,12 @@ securityContext: {}
 service:
   name: opamp-service
   type: LoadBalancer
-  externalPort: 4321
-  internalPort: 4321
+  httpPortName: http
+  externalHTTPPort: 4321
+  internalHTTPPort: 4321
+  wsPortName: ws
+  externalWSPort: 4320
+  internalWSPort: 4320
 
 livenessProbe:
   initialDelaySeconds: 10

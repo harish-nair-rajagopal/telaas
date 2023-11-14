@@ -51,7 +51,7 @@ func (srv *Server) Start() {
 				},
 			},
 		},
-		ListenEndpoint: "127.0.0.1:4320",
+		ListenEndpoint: "0.0.0.0:4320",
 	}
 	// tlsConfig, err := internal.CreateServerTLSConfig(
 	// 	"../../certs/certs/ca.cert.pem",

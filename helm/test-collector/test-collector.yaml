@@ -68,7 +68,9 @@ config:
     opamp:
       server:
         ws:
-          endpoint: wss://127.0.0.1:4320/v1/opamp
+          endpoint: ws://opamp:4320/v1/opamp
+          tls:
+            insecure: true
   receivers:
     otlp:
       protocols:

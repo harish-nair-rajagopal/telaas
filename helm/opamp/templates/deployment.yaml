@@ -34,20 +34,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.externalPort }}
+            - name: {{ .Values.service.httpPortName }}
+              containerPort: {{ .Values.service.externalHTTPPort }}
+              protocol: TCP
+            - name: {{ .Values.service.wsPortName }}
+              containerPort: {{ .Values.service.externalWSPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /status
-              port: {{ .Values.service.internalPort }}
+              port: {{ .Values.service.internalHTTPPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           readinessProbe:
             httpGet:
               path: /status
-              port: {{ .Values.service.internalPort }}
+              port: {{ .Values.service.internalHTTPPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
