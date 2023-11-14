@@ -1,0 +1,31 @@
+FROM golang:1.20 as builder
+
+WORKDIR /app
+
+COPY ./internal/opamp ./opamp
+
+WORKDIR /app/opamp/server
+
+RUN go mod tidy
+
+RUN go mod vendor
+
+RUN CGO_ENABLED=0 go build -o /app/opamp-server ./main.go
+
+FROM debian:stable-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/opamp-server .
+
+RUN chmod 555 /app/opamp-server
+
+ARG USER_ID=10001
+RUN groupadd -g ${USER_ID} appuser && \
+    useradd -r -u ${USER_ID} -g appuser appuser
+
+USER appuser
+
+EXPOSE 4317 55680 55679
+ENTRYPOINT ["/app/opamp-server"]
+CMD []
