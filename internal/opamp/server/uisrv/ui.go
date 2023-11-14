@@ -11,7 +11,7 @@ import (
 	"github.com/open-telemetry/opamp-go/internal"
 	"github.com/open-telemetry/opamp-go/protobufs"
 
-	"github.com/hpe-hcss/otaas/internal/opamp/server/data"
+	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/data"
 )
 
 var htmlDir string
