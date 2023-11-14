@@ -2,11 +2,14 @@ FROM golang:1.20 as builder
 
 WORKDIR /app
 
-COPY ./cmd/otaas ./otaas
+COPY ./cmd/otaas /app/cmd/otaas
+COPY ./api /app/api
 
-WORKDIR /app/otaas
+WORKDIR /app/cmd/otaas
 
 ARG GITHUB_TOKEN
+
+RUN export GOPRIVATE=github.com/harish-nair-rajagopal
 
 RUN bash -c "git config --global url.https://\$GITHUB_TOKEN@github.com/.insteadOf https://github.com/"
 

@@ -1,4 +1,4 @@
-module github.com/hpe-hcss/otaas/internal/opamp
+module github.com/harish-nair-rajagopal/telaas/opamp
 
 go 1.20
 
@@ -48,4 +48,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
-replace github.com/hpe-hcss/otaas/internal/server => ./
+// replace github.com/hpe-hcss/otaas/internal/server => ./

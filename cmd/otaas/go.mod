@@ -1,4 +1,4 @@
-module github.com/hpe-hcss/otaas/internal/opamp
+module github.com/harish-nair-rajagopal/telaas/otaas
 
 go 1.20
 
@@ -49,4 +49,4 @@ require (
 )
 
 // replace github.com/hpe-hcss/otaas/internal/server => ./
-// replace github.com/harishrajagopal/telaas => ../../
+// replace github.com/harish-nair-rajagopal/telaas/api/v1 => ../../api/v1
