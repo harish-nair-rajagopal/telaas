@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/hpe-hcss/otaas/internal/opamp"
-	"github.com/hpe-hcss/otaas/internal/opamp/server/data"
+	"github.com/harish-nair-rajagopal/telaas/internal/opamp"
+	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/data"
 	"github.com/open-telemetry/opamp-go/protobufs"
 	"github.com/open-telemetry/opamp-go/server"
 	"github.com/open-telemetry/opamp-go/server/types"

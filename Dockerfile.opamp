@@ -1,10 +1,10 @@
 FROM golang:1.20 as builder
 
 WORKDIR /app
+COPY ./cmd/opamp /app/cmd/opamp
+COPY ./internal/opamp /app/internal/opamp
 
-COPY ./internal/opamp ./opamp
-
-WORKDIR /app/opamp/server
+WORKDIR /app/cmd/opamp
 
 ARG GITHUB_TOKEN
 
