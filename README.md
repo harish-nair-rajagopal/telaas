@@ -49,7 +49,7 @@ response - configuration, pipeline status
 
 ### Steps
 
-Building and running the Opamp Server
+[Building and running the Opamp Server](helm/opamp/README.md)
 
 Building and running the global pipeline service
 
