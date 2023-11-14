@@ -149,9 +149,13 @@ func UpdateListener(ctx context.Context, pipeline v1.OTaaSPipeline, routingKey s
 			fmt.Print("err")
 		}
 		// Getting Cluster IP of the service
-		serviceName := fmt.Sprintf("%s-otel-coll-pipeline", pipeline.Name)
+		serviceName := fmt.Sprintf("%s-otel-coll-pipeline-collector", pipeline.Name)
+		fmt.Println("-----------", serviceName)
+		time.Sleep(15 * time.Second)
 		svcList, err := clientset.CoreV1().Services("default").Get(context.TODO(), serviceName, metav1.GetOptions{})
+		fmt.Println(svcList)
 		clusterIP := svcList.Spec.ClusterIP
+		fmt.Println(clusterIP)
 
 		obj = UpdateConfigMap(obj, routingKey, clusterIP)
 		res, err := yaml.Marshal(obj)
