@@ -6,7 +6,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.1.2
 	github.com/knadh/koanf v1.3.3
 	github.com/oklog/ulid/v2 v2.0.2
-	github.com/open-telemetry/opamp-go v0.1.0
+	github.com/open-telemetry/opamp-go v0.10.0
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/stretchr/testify v1.7.0
 	go.opentelemetry.io/otel v1.3.0
@@ -48,4 +48,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
-// replace github.com/hpe-hcss/otaas/internal/server => ./
+replace github.com/harish-nair-rajagopal/telaas/internal/opamp => ../../internal/opamp
