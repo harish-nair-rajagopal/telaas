@@ -1,0 +1,35 @@
+FROM golang:1.20 as builder
+
+WORKDIR /app
+
+COPY ./cmd/otaas ./otaas
+
+WORKDIR /app/otaas
+
+ARG GITHUB_TOKEN
+
+RUN bash -c "git config --global url.https://\$GITHUB_TOKEN@github.com/.insteadOf https://github.com/"
+
+RUN go mod tidy
+
+RUN go mod vendor
+
+RUN CGO_ENABLED=0 go build -o /app/otaas-service ./main.go
+
+FROM debian:stable-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/otaas-service .
+
+RUN chmod 555 /app/otaas-service
+
+ARG USER_ID=10001
+RUN groupadd -g ${USER_ID} appuser && \
+    useradd -r -u ${USER_ID} -g appuser appuser
+
+USER appuser
+
+EXPOSE 4317 55680 55679
+ENTRYPOINT ["/app/otaas-service"]
+CMD []
