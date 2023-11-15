@@ -167,6 +167,18 @@ func UpdateListener(ctx context.Context, pipeline v1.OTaaSPipeline, routingKey s
 		// Updating the config Map
 		clientset.CoreV1().ConfigMaps("default").Update(context.TODO(), oldconfigMap, metav1.UpdateOptions{})
 
+		// Restarting the deployment of the listener
+		deploy, err := clientset.AppsV1().Deployments("default").Get(context.TODO(), "opentelemetrycollector", metav1.GetOptions{})
+		if deploy.Spec.Template.ObjectMeta.Annotations == nil {
+			deploy.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
+		}
+		deploy.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+
+		_, err = clientset.AppsV1().Deployments("default").Update(context.TODO(), deploy, metav1.UpdateOptions{})
+		if err != nil {
+			panic(err.Error())
+		}
+
 	}
 }
 
