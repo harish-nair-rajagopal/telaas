@@ -15,7 +15,11 @@ Open Agent Management Protocol (OpAMP) is a network protocol for remote manageme
 
 ## Architecture
 
+![alt text](docs/OTaaS.png)
+
 ## Demo
+
+[Presentation](https://hpe-my.sharepoint.com/:p:/p/harish-nair_rajagopal/Ea220lrhevdOh8o-0kvO3ssBW569C4CrKr7JRdrvypcz_g?e=rgTJ2D)
 
 ### Steps
 
