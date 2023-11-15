@@ -33,6 +33,6 @@ RUN groupadd -g ${USER_ID} appuser && \
 
 USER appuser
 
-EXPOSE 8080
+EXPOSE 4317 55680 55679 8080
 ENTRYPOINT ["/app/otaas-service"]
 CMD []

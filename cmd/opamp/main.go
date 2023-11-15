@@ -5,9 +5,9 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/data"
-	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/opampsrv"
-	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/uisrv"
+	"github.com/hpe-hcss/otaas/internal/opamp/server/data"
+	"github.com/hpe-hcss/otaas/internal/opamp/server/opampsrv"
+	"github.com/hpe-hcss/otaas/internal/opamp/server/uisrv"
 )
 
 var logger = log.New(log.Default().Writer(), "[MAIN] ", log.Default().Flags()|log.Lmsgprefix|log.Lmicroseconds)

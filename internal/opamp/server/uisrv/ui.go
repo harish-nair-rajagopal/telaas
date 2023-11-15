@@ -8,8 +8,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/data"
+	"github.com/open-telemetry/opamp-go/internal"
 	"github.com/open-telemetry/opamp-go/protobufs"
+
+	"github.com/hpe-hcss/otaas/internal/opamp/server/data"
 )
 
 var htmlDir string
@@ -24,8 +26,7 @@ func Start(rootDir string) {
 	mux.HandleFunc("/", renderRoot)
 	mux.HandleFunc("/agent", renderAgent)
 	mux.HandleFunc("/save_config", saveCustomConfigForInstance)
-	mux.HandleFunc("/status", statusCheck)
-	// mux.HandleFunc("/rotate_client_cert", rotateInstanceClientCert)
+	mux.HandleFunc("/rotate_client_cert", rotateInstanceClientCert)
 	srv = &http.Server{
 		Addr:    "0.0.0.0:4321",
 		Handler: mux,
@@ -60,11 +61,6 @@ func renderTemplate(w http.ResponseWriter, htmlTemplateFile string, data interfa
 
 func renderRoot(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "root.html", data.AllAgents.GetAllAgentsReadonlyClone())
-}
-
-func statusCheck(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	return
 }
 
 func renderAgent(w http.ResponseWriter, r *http.Request) {
@@ -111,50 +107,50 @@ func saveCustomConfigForInstance(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/agent?instanceid="+string(instanceId), http.StatusSeeOther)
 }
 
-// func rotateInstanceClientCert(w http.ResponseWriter, r *http.Request) {
-// 	if err := r.ParseForm(); err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		return
-// 	}
+func rotateInstanceClientCert(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-// 	// Find the agent instance.
-// 	instanceId := data.InstanceId(r.Form.Get("instanceid"))
-// 	agent := data.AllAgents.GetAgentReadonlyClone(instanceId)
-// 	if agent == nil {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		return
-// 	}
+	// Find the agent instance.
+	instanceId := data.InstanceId(r.Form.Get("instanceid"))
+	agent := data.AllAgents.GetAgentReadonlyClone(instanceId)
+	if agent == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 
-// 	// Create a new certificate for the agent.
-// 	certificate, err := internal.CreateTLSCert("../../certs/certs/ca.cert.pem", "../../certs/certs/ca.key.pem")
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		logger.Println(err)
-// 		return
-// 	}
+	// Create a new certificate for the agent.
+	certificate, err := internal.CreateTLSCert("../../certs/certs/ca.cert.pem", "../../certs/certs/ca.key.pem")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		logger.Println(err)
+		return
+	}
 
-// 	// Create an offer for the agent.
-// 	offers := &protobufs.ConnectionSettingsOffers{
-// 		Opamp: &protobufs.OpAMPConnectionSettings{
-// 			Certificate: certificate,
-// 		},
-// 	}
+	// Create an offer for the agent.
+	offers := &protobufs.ConnectionSettingsOffers{
+		Opamp: &protobufs.OpAMPConnectionSettings{
+			Certificate: certificate,
+		},
+	}
 
-// 	// Send the offer to the agent.
-// 	data.AllAgents.OfferAgentConnectionSettings(instanceId, offers)
+	// Send the offer to the agent.
+	data.AllAgents.OfferAgentConnectionSettings(instanceId, offers)
 
-// 	logger.Printf("Waiting for agent %s to reconnect\n", instanceId)
+	logger.Printf("Waiting for agent %s to reconnect\n", instanceId)
 
-// 	// Wait for up to 5 seconds for a Status update, which is expected
-// 	// to be reported by the agent after we set the remote config.
-// 	timer := time.NewTicker(time.Second * 5)
+	// Wait for up to 5 seconds for a Status update, which is expected
+	// to be reported by the agent after we set the remote config.
+	timer := time.NewTicker(time.Second * 5)
 
-// 	// TODO: wait for agent to reconnect instead of waiting full 5 seconds.
+	// TODO: wait for agent to reconnect instead of waiting full 5 seconds.
 
-// 	select {
-// 	case <-timer.C:
-// 		logger.Printf("Time out waiting for agent %s to reconnect\n", instanceId)
-// 	}
+	select {
+	case <-timer.C:
+		logger.Printf("Time out waiting for agent %s to reconnect\n", instanceId)
+	}
 
-// 	http.Redirect(w, r, "/agent?instanceid="+string(instanceId), http.StatusSeeOther)
-// }
+	http.Redirect(w, r, "/agent?instanceid="+string(instanceId), http.StatusSeeOther)
+}

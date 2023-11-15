@@ -1,10 +1,10 @@
 FROM golang:1.20 as builder
 
 WORKDIR /app
-COPY ./cmd/opamp /app/cmd/opamp
-COPY ./internal/opamp /app/internal/opamp
 
-WORKDIR /app/cmd/opamp
+COPY ./internal/opamp ./opamp
+
+WORKDIR /app/opamp/server
 
 ARG GITHUB_TOKEN
 
@@ -20,18 +20,9 @@ RUN CGO_ENABLED=0 go build -o /app/opamp-server ./main.go
 
 FROM debian:stable-slim
 
-# RUN sed -i 's+deb http://security.debian.org/debian-security stable/updates main++g' /etc/apt/sources.list
-# RUN echo "deb http://security.debian.org/debian-security bullseye-security main contrib non-free" >> /etc/apt/sources.list \
- RUN apt-get update \
- && apt-get install -y \
-    ca-certificates \
-    net-tools
-
-
 WORKDIR /app
 
 COPY --from=builder /app/opamp-server .
-COPY ./internal/opamp/server/uisrv/html /app/uisrv/html
 
 RUN chmod 555 /app/opamp-server
 
@@ -41,6 +32,6 @@ RUN groupadd -g ${USER_ID} appuser && \
 
 USER appuser
 
-EXPOSE 4320 4321
+EXPOSE 4317 55680 55679
 ENTRYPOINT ["/app/opamp-server"]
 CMD []

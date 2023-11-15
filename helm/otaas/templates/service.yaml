@@ -11,5 +11,7 @@ spec:
       targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
       name: {{ .Values.service.name }}
+  externalIPs:
+  - 192.168.49.2
   selector:
     {{- include "otaas.selectorLabels" . | nindent 4 }}

@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/harish-nair-rajagopal/telaas/internal/opamp/server/data"
+	"github.com/hpe-hcss/otaas/internal/opamp"
+	"github.com/hpe-hcss/otaas/internal/opamp/server/data"
 	"github.com/open-telemetry/opamp-go/protobufs"
 	"github.com/open-telemetry/opamp-go/server"
 	"github.com/open-telemetry/opamp-go/server/types"
@@ -51,17 +52,17 @@ func (srv *Server) Start() {
 				},
 			},
 		},
-		ListenEndpoint: "0.0.0.0:4320",
+		ListenEndpoint: "127.0.0.1:4320",
 	}
-	// tlsConfig, err := internal.CreateServerTLSConfig(
-	// 	"../../certs/certs/ca.cert.pem",
-	// 	"../../certs/server_certs/server.cert.pem",
-	// 	"../../certs/server_certs/server.key.pem",
-	// )
-	// if err != nil {
-	// 	srv.logger.Debugf("Could not load TLS config, working without TLS: %v", err.Error())
-	// }
-	// settings.TLSConfig = tlsConfig
+	tlsConfig, err := internal.CreateServerTLSConfig(
+		"../../certs/certs/ca.cert.pem",
+		"../../certs/server_certs/server.cert.pem",
+		"../../certs/server_certs/server.key.pem",
+	)
+	if err != nil {
+		srv.logger.Debugf("Could not load TLS config, working without TLS: %v", err.Error())
+	}
+	settings.TLSConfig = tlsConfig
 
 	srv.opampSrv.Start(settings)
 }
