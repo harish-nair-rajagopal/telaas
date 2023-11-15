@@ -39,7 +39,7 @@ securityContext: {}
 service:
   name: otaas-service
   type: LoadBalancer
-  externalPort: 8080
+  externalPort: 80
   internalPort: 8080
 
 livenessProbe:
