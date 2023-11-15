@@ -152,14 +152,14 @@ func UpdateListener(ctx context.Context, pipeline v1.OTaaSPipeline, routingKey s
 		}
 		// Getting Cluster IP of the service
 		serviceName := fmt.Sprintf("%s-otel-coll-pipeline-collector", pipeline.Name)
-		fmt.Println("-----------", serviceName)
-		time.Sleep(15 * time.Second)
-		svcList, err := clientset.CoreV1().Services("default").Get(context.TODO(), serviceName, metav1.GetOptions{})
-		fmt.Println(svcList)
-		clusterIP := svcList.Spec.ClusterIP
-		fmt.Println(clusterIP)
+		// fmt.Println("-----------", serviceName)
+		// time.Sleep(20 * time.Second)
+		// svcList, err := clientset.CoreV1().Services("default").Get(context.TODO(), serviceName, metav1.GetOptions{})
+		// fmt.Println(svcList)
+		// clusterIP := svcList.Spec.ClusterIP
+		// fmt.Println(clusterIP)
 
-		obj = UpdateConfigMap(obj, routingKey, clusterIP)
+		obj = UpdateConfigMap(obj, routingKey, serviceName)
 		res, err := yaml.Marshal(obj)
 		fmt.Println(string(res))
 		// configMapData := make(map[string]string, 0)
@@ -168,6 +168,18 @@ func UpdateListener(ctx context.Context, pipeline v1.OTaaSPipeline, routingKey s
 
 		// Updating the config Map
 		clientset.CoreV1().ConfigMaps("default").Update(context.TODO(), oldconfigMap, metav1.UpdateOptions{})
+
+		// Restarting the deployment of the listener
+		deploy, err := clientset.AppsV1().Deployments("default").Get(context.TODO(), "opentelemetrycollector", metav1.GetOptions{})
+		if deploy.Spec.Template.ObjectMeta.Annotations == nil {
+			deploy.Spec.Template.ObjectMeta.Annotations = make(map[string]string)
+		}
+		deploy.Spec.Template.ObjectMeta.Annotations["kubectl.kubernetes.io/restartedAt"] = time.Now().Format(time.RFC3339)
+
+		_, err = clientset.AppsV1().Deployments("default").Update(context.TODO(), deploy, metav1.UpdateOptions{})
+		if err != nil {
+			panic(err.Error())
+		}
 
 	}
 }
@@ -266,17 +278,6 @@ func createCustomResource(ctx context.Context, pipeline v1.OTaaSPipeline) *rest.
         endpoint: ${MY_POD_IP}:4317
       http:
         endpoint: ${MY_POD_IP}:4318
-  hostmetrics:
-    collection_interval: 60s
-    scrapers:
-      cpu:
-      load:
-      memory:
-      disk:
-      filesystem:
-      network:
-      paging:
-      processes:
 processors:
   batch:
     send_batch_max_size: 1000
@@ -299,7 +300,7 @@ exporters:
 service:
   pipelines:
     metrics:
-      receivers: [hostmetrics, otlp]
+      receivers: [otlp]
       processors: [batch]
       exporters: [prometheusremotewrite]
 `,
