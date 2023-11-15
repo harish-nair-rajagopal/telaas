@@ -1,6 +1,6 @@
 {{ template "header.html" . }}
 
-<a href="/">Back to Agents List</a>
+<a href="/">Back to Open Telemetry Agents List</a>
 
 <style>
     td {
@@ -18,10 +18,10 @@
 <table>
     <tr>
         <td valign="top">
-            <h3>Agent</h3>
+            <h3>Open Telemetry Agent</h3>
             <table border="1" style="border-collapse: collapse">
                 <tr>
-                    <td>Instance ID:</td><td>{{ .InstanceId }}</td>
+                    <td>Open Telemetry Agent Instance ID:</td><td>{{ .InstanceId }}</td>
                 </tr>
                 {{if .Status.Health }}
                 <tr>
@@ -64,7 +64,7 @@
 <table width="100%">
     <tr>
         <td valign="top">
-            Current Effective Configuration:<br/>
+            Current Effective Configuration (WIP for Agent implementation):<br/>
             <pre><code class="language-yaml">{{ .EffectiveConfig }}</code></pre>
         </td>
         <td valign="top">
