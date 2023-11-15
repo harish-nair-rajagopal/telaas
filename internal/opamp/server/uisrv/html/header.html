@@ -1,4 +1,23 @@
 <html >
 <title>Telemetry as a Service</title>
+<link rel="icon" type="image/x-icon" href="/Logo.png">
+<head>
+    <script>
+    function submitForm(){
+        var form = document.querySelector("#formElem");
+        alert("Sending Json");
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action, true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+        
+        var data = {
+          name : form.querySelector('input[name="name"]').value,
+          exporter : form.querySelector('input[name="exporter"]').value,
+        }
+        xhr.send(JSON.stringify(data));
+    }
+    </script>
+</head>
 <body>
-<h1>OpAMP Server for fleet management of OTEL Agents</h1>
+<h1>OpAMP based Server for fleet management of OTEL Agents</h1>

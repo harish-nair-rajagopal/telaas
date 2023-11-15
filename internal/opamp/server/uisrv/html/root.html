@@ -1,6 +1,6 @@
 {{ template "header.html" . }}
 
-<h2>Agents</h2>
+<h2>Open Telemetry Collector Agents</h2>
 
 <style>
     td {
@@ -10,14 +10,24 @@
 
 <table width=100% border="1" style="border-collapse: collapse">
     <tr>
-        <th>Instance ID</th>
+        <th>Open Telemetry Agent Instance IDs</th>
     </tr>
 {{ range . }}
     <tr>
         <td><a href="agent?instanceid={{ .InstanceId }}">{{ .InstanceId }}</a></td>
     </tr>
 {{ end }}
-</table>
+<tr>
+    <td valign="top">
+        New OTEL configuration:<br/>
+        <form action="http://localhost:8080/v1/otaas/mPipeline" method="POST" name="myForm" id="formElem">
+            <input type="text" name="name" value="test">
+            <input type="text" name="exporter" value="logz.io">
+            <button type="button" onClick="submitForm()">Create OTEL Collector</button>
+        </form>
+    </td>
+</tr>
 
+</table>
 </body>
 </html>

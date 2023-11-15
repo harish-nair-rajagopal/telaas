@@ -25,7 +25,8 @@ FROM debian:stable-slim
  RUN apt-get update \
  && apt-get install -y \
     ca-certificates \
-    net-tools
+    net-tools \
+    vim
 
 
 WORKDIR /app
