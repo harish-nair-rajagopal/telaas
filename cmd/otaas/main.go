@@ -10,6 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"math/rand"
@@ -38,6 +39,7 @@ func main() {
 
 	// create new router
 	router := gin.Default()
+	router.Use(cors.Default())
 	router.HandleMethodNotAllowed = true
 
 	// GET pipeline
