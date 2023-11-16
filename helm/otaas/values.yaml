@@ -6,9 +6,9 @@ replicaCount: 1
 
 image:
   repository: harishrajagopal/otaas
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.0"
+  tag: "0.2.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -39,7 +39,7 @@ securityContext: {}
 service:
   name: otaas-service
   type: LoadBalancer
-  externalPort: 80
+  externalPort: 8080
   internalPort: 8080
 
 livenessProbe:

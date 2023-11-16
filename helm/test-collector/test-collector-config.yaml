@@ -62,6 +62,15 @@ clusterRole:
 # Cumulative to delta transformer?
 # Export to logzio
 config:  
+  # extensions:
+  #   health_check: {}
+  #   memory_ballast: {}
+  #   opamp:
+  #     server:
+  #       ws:
+  #         endpoint: ws://opamp:4320/v1/opamp
+  #         tls:
+  #           insecure: true
   extensions:
     health_check: {}
     memory_ballast: {}
@@ -71,6 +80,12 @@ config:
           endpoint: ws://opamp:4320/v1/opamp
           tls:
             insecure: true
+    headers_setter:
+      headers:
+        - action: insert
+          key: routing-key
+          from_context: routing-key
+
   receivers:
     otlp:
       protocols:
@@ -191,10 +206,15 @@ config:
 #    telemetry:
 #      logs:
 #        level: "debug"
+    # extensions:
+    #   - health_check
+    #   - memory_ballast
+    #   - opamp
     extensions:
       - health_check
       - memory_ballast
       - opamp
+      - headers_setter
     pipelines:
       metrics:
         receivers: [prometheus]

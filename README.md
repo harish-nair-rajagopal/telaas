@@ -23,13 +23,19 @@ Open Agent Management Protocol (OpAMP) is a network protocol for remote manageme
 
 ### Steps
 
+[Install open telemetry operator](helm/otel-operator/README.md)
+
 [Building and running the Opamp Server](helm/opamp/README.md)  
 
 [Building and running the global pipeline service](helm/global-pipeline/README.md)  
 
 [Building and running the otaas service](helm/otaas/README.md)  
 
+You can now browse to otaas service UI at http://localhost:4321 and use the UI to manage connected otel collectors and create new ones  
+
 [Building and running the OTEL collector with Opamp enabled](helm/test-collector/README.md)  
+
+The collector launched manually with the above step will also connect to Opamp
 
 
 ### Recording
