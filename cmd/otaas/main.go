@@ -297,7 +297,26 @@ exporters:
       p8s_logzio_name:` + ` "` + pipeline.Name + `-otaas-metrics"
     headers:
       Authorization: "Bearer gnrnmnGbTQkFljPQBwsLtGOWuMtZDTSl"
+extensions:
+  health_check: {}
+  memory_ballast: {}
+  opamp:
+    server:
+      ws:
+        endpoint: ws://opamp:4320/v1/opamp
+        tls:
+          insecure: true
+  headers_setter:
+    headers:
+      - action: insert
+        key: routing-key
+        from_context: routing-key
 service:
+  extensions:
+    - health_check
+    - memory_ballast
+    - opamp
+    - headers_setter
   pipelines:
     metrics:
       receivers: [otlp]

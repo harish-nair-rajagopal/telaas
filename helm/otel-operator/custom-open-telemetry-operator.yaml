@@ -1,0 +1,4 @@
+manager:
+  collectorImage:
+    repository: harishrajagopal/otel-collector
+    tag: "0.1.0"
