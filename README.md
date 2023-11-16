@@ -38,7 +38,7 @@ Open Agent Management Protocol (OpAMP) is a network protocol for remote manageme
 
 [Demo Recording 2 - Managing launched OTEL collectors via OpAMP service](https://hpe-my.sharepoint.com/:v:/p/harish-nair_rajagopal/Ef6akl_tkWdOnposg-taGbQBdrhiZH9T1I7pUR0UCERJhw?e=eBDpNj)
 
-### References
+## References
 
 [OpAmp extensions for Open Telemetry collector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/extension/opampextension)  
 [OpAmp for Open Telemetry Operator](https://docs.google.com/document/d/1M8VLNe_sv1MIfu5bUR5OV_vrMBnAI7IJN-7-IAr37JY/edit#heading=h.bwt48qsb77i2)  
